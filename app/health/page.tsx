@@ -249,10 +249,10 @@ function HealthContent() {
                       variant="outline" 
                       size="sm"
                       onClick={() => {
-                        // Scroll to chat widget or open chat
-                        const chatWidget = document.querySelector('[data-chat-widget]')
-                        if (chatWidget) {
-                          chatWidget.scrollIntoView({ behavior: 'smooth' })
+                        // Open the popup chatbot
+                        const chatButton = document.querySelector('[data-chat-button]')
+                        if (chatButton) {
+                          (chatButton as HTMLElement).click()
                         }
                       }}
                     >

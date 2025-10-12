@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/sidebar"
 import { MonthlySpendingChart } from "@/components/charts/monthly-spending-chart"
 import { GoalCard } from "@/components/finance/goal-card"
 import useSWR from "swr"
-import { ChatWidget } from "@/components/ai/chat-widget"
+
 import { ExpensePredictionDashboard } from "@/components/ai/expense-prediction-dashboard"
 import { StockTracker } from "@/components/market/stock-tracker"
 import { CryptoTracker } from "@/components/market/crypto-tracker"
@@ -318,7 +318,6 @@ function DashboardContent() {
         </div>
       </div>
 
-      <ChatWidget />
     </main>
   )
 }

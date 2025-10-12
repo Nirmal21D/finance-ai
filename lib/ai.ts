@@ -1,22 +1,20 @@
-import { generateText } from "ai"
+import { GoogleGenerativeAI } from "@google/generative-ai"
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY!)
 
 export async function askGemini(prompt: string) {
-  const { text } = await generateText({
-    model: "google-vertex/gemini-1.5-flash",
-    prompt,
-  })
-  return text
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const result = await model.generateContent(prompt)
+  return result.response.text()
 }
 
 export async function categorizeExpense(input: { note: string; amount: number }) {
   const system =
     "You are a finance assistant. Categorize the expense into one of: Food, Travel, Shopping, Bills, Health, Entertainment, Transport, Other. Return only the category word."
   const prompt = `${system}\nNote: ${input.note}\nAmount: ${input.amount}`
-  const { text } = await generateText({
-    model: "google-vertex/gemini-1.5-flash",
-    prompt,
-  })
-  return (text || "Other").trim()
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const result = await model.generateContent(prompt)
+  return (result.response.text() || "Other").trim()
 }
 
 export interface FinancialData {
@@ -67,12 +65,10 @@ ${financialData.monthlyData.slice(-6).map(month =>
     ? `${context}\n\nUser Question: ${userMessage}\n\nProvide personalized financial advice:`
     : `${context}\n\nProvide 2-3 key personalized financial insights based on this data:`
 
-  const { text } = await generateText({
-    model: "google-vertex/gemini-1.5-flash",
-    prompt: `${systemPrompt}\n\n${userPrompt}`,
-  })
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const result = await model.generateContent(`${systemPrompt}\n\n${userPrompt}`)
 
-  return text || "I couldn't generate insights at the moment. Please try again."
+  return result.response.text() || "I couldn't generate insights at the moment. Please try again."
 }
 
 export async function generateSpendingAnalysis(
@@ -104,12 +100,10 @@ Spending Analysis:
 
   const prompt = `${context}\n\nAnalyze this spending data and provide specific recommendations for budget optimization and expense reduction. Be practical and actionable.`
 
-  const { text } = await generateText({
-    model: "google-vertex/gemini-1.5-flash",
-    prompt,
-  })
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const result = await model.generateContent(prompt)
 
-  return text || "Analysis unavailable. Please try again."
+  return result.response.text() || "Analysis unavailable. Please try again."
 }
 
 export async function generateGoalRecommendations(
@@ -128,10 +122,8 @@ Financial Profile:
 
   const prompt = `${context}\n\nSuggest 3 specific, achievable financial goals based on this profile. Include target amounts and timeframes. Consider emergency fund, investments, and specific savings goals.`
 
-  const { text } = await generateText({
-    model: "google-vertex/gemini-1.5-flash",
-    prompt,
-  })
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const result = await model.generateContent(prompt)
 
-  return text || "Goal recommendations unavailable. Please try again."
+  return result.response.text() || "Goal recommendations unavailable. Please try again."
 }

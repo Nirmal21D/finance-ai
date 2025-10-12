@@ -6,6 +6,7 @@ import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { ErrorBoundary } from "@/components/error-boundary"
+import { PopupChatbot } from "@/components/ai/popup-chatbot"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -30,16 +31,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
       <body className="font-sans">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
+          disableTransitionOnChange
         >
           <ErrorBoundary>
             <AuthProvider>
               <Suspense fallback={null}>{children}</Suspense>
+              <PopupChatbot />
               <Analytics />
               <Toaster />
             </AuthProvider>
