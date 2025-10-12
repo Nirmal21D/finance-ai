@@ -10,6 +10,7 @@ import { ExpensePredictionDashboard } from "@/components/ai/expense-prediction-d
 import { StockTracker } from "@/components/market/stock-tracker"
 import { CryptoTracker } from "@/components/market/crypto-tracker"
 import { NewsTicker } from "@/components/market/news-ticker"
+import { HealthScoreCard } from "@/components/health/health-score-card"
 import { ProtectedRoute } from "@/components/ProtectedRoute"
 import { useAuth } from "@/contexts/AuthContext"
 import { TransactionService } from "@/lib/transaction-service"
@@ -282,8 +283,20 @@ function DashboardContent() {
               <CryptoTracker />
             </div>
 
-            {/* AI Insight + Goals */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Financial Health Score + AI Insights + Goals */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <HealthScoreCard 
+                transactions={transactions}
+                budgets={budgetData?.map(bs => ({
+                  category: bs.budget.category,
+                  monthlyLimit: bs.budget.monthlyLimit,
+                  currentSpent: bs.budget.currentSpent,
+                  alertThreshold: 80
+                })) || []}
+                showDetails={true}
+                className="brut-border brut-shadow"
+              />
+
               <div className="brut-border brut-shadow rounded-md p-4 bg-card">
                 <div className="heading text-lg mb-3">AI Insights</div>
                 <div className="space-y-2">

@@ -53,6 +53,10 @@ app.include_router(prediction_router, prefix="/api/predictions", tags=["Expense 
 from api.market_endpoints import router as market_router
 app.include_router(market_router, prefix="/api/market", tags=["Market Data"])
 
+# Include health scoring endpoints
+from api.health_endpoints import router as health_router
+app.include_router(health_router, prefix="/api/health", tags=["Financial Health"])
+
 # Global ML model instance
 categorizer = None
 
@@ -86,6 +90,13 @@ async def shutdown_event():
         await cleanup_market_service()
     except Exception as e:
         logger.error(f"Error during market service cleanup: {e}")
+    
+    # Cleanup health scoring service
+    try:
+        from api.health_endpoints import cleanup_health_scorer
+        await cleanup_health_scorer()
+    except Exception as e:
+        logger.error(f"Error during health scorer cleanup: {e}")
 
 @app.get("/")
 async def root():
