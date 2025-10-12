@@ -10,6 +10,7 @@ const items = [
   { href: "/transactions", label: "Transactions" },
   { href: "/budgets", label: "Budgets" },
   { href: "/goals", label: "Goals" },
+  { href: "/market", label: "Market Data" },
   { href: "/reports", label: "Reports" },
   { href: "/data", label: "Data Management" },
   { href: "/settings", label: "Settings" },
