@@ -1,0 +1,125 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow authenticated users to read/write only their own transactions
+    match /transactions/{document} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Allow authenticated users to manage their own user profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to manage their own goals
+    match /goals/{document} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Allow authenticated users to manage their own notifications
+    match /notifications/{document} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Allow authenticated users to manage their own budgets
+    match /budgets/{document} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Allow authenticated users to manage their own budget alerts
+    match /budget_alerts/{document} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Block all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// Schema Documentation:
+//
+// transactions collection:
+// {
+//   id: string (auto-generated)
+//   userId: string (auth.uid - for multi-user support)
+//   category: string (Food, Travel, Shopping, Bills, Health, Entertainment, Transport, Other)
+//   amount: number (positive for income, negative for expenses)
+//   date: string (YYYY-MM-DD format)
+//   note: string (description/memo)
+//   type: 'income' | 'expense'
+//   createdAt: Timestamp
+//   updatedAt: Timestamp
+// }
+//
+// users collection:
+// {
+//   id: string (matches auth.uid)
+//   email: string (optional)
+//   displayName: string (optional)
+//   preferences: {
+//     theme: 'light' | 'dark'
+//     currency: string (default: 'INR')
+//     notifications: boolean
+//   }
+//   createdAt: Timestamp
+//   lastLoginAt: Timestamp
+// }
+//
+// goals collection:
+// {
+//   id: string (auto-generated)
+//   userId: string (auth.uid)
+//   title: string (e.g., "New Laptop")
+//   targetAmount: number
+//   currentAmount: number
+//   deadline: string (YYYY-MM-DD format, optional)
+//   category: string (optional)
+//   createdAt: Timestamp
+//   updatedAt: Timestamp
+// }
+//
+// notifications collection:
+// {
+//   id: string (auto-generated)
+//   userId: string (auth.uid)
+//   type: 'budget_limit' | 'bill_reminder' | 'goal_milestone' | 'custom'
+//   title: string
+//   message: string
+//   read: boolean
+//   scheduledFor: Timestamp (optional, for future notifications)
+//   createdAt: Timestamp
+// }
+//
+// budgets collection:
+// {
+//   id: string (auto-generated)
+//   userId: string (auth.uid)
+//   category: string (Food, Travel, Shopping, etc.)
+//   monthlyLimit: number
+//   currentSpent: number (auto-calculated)
+//   alertThreshold: number (percentage, e.g., 80)
+//   period: 'monthly' | 'weekly' | 'yearly'
+//   isActive: boolean
+//   createdAt: Timestamp
+//   updatedAt: Timestamp
+// }
+//
+// budget_alerts collection:
+// {
+//   id: string (auto-generated)
+//   userId: string (auth.uid)
+//   budgetId: string (references budgets collection)
+//   category: string
+//   type: 'threshold' | 'exceeded' | 'weekly_update'
+//   message: string
+//   isRead: boolean
+//   createdAt: Timestamp
+// }
