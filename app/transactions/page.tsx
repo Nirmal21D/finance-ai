@@ -37,7 +37,7 @@ type Tx = {
 const CATEGORIES = {
   income: [
     'Salary',
-    'Freelance',
+    'Freelance', 
     'Business',
     'Investments',
     'Rental',
@@ -46,21 +46,21 @@ const CATEGORIES = {
   ],
   expense: [
     'Food & Dining',
+    'Transportation', 
     'Shopping',
-    'Transportation',
+    'Groceries',
     'Bills & Utilities',
-    'Healthcare',
     'Entertainment',
+    'Healthcare',
     'Education',
     'Travel',
     'Insurance',
-    'Groceries',
     'Rent',
     'Other Expense'
   ]
 }
 
-async function categorize(url: string, { arg }: { arg: { note: string; amount: number } }) {
+async function categorize(url: string, { arg }: { arg: { note: string; amount: number; type: string } }) {
   const res = await fetch(url, { 
     method: "POST", 
     headers: { "Content-Type": "application/json" },
@@ -124,29 +124,39 @@ function TransactionsContent() {
   const onAdd = async () => {
     if (!db || !user) return alert("Please sign in to add transactions.")
     
-    if (!form.category || !form.amount) {
-      alert("Please fill in category and amount.")
+    if (!form.category || !form.amount || Number(form.amount) <= 0) {
+      alert("Please fill in category and amount (must be positive).")
       return
     }
+    
+    // Ensure proper amount handling based on transaction type
+    const amount = Number(form.amount)
+    const finalAmount = form.type === 'expense' ? -Math.abs(amount) : Math.abs(amount)
     
     const payload = {
       userId: user.uid,
       category: form.category,
-      amount: Number(form.amount),
+      amount: finalAmount,
       date: form.date,
       note: form.note,
       type: form.type,
       createdAt: Timestamp.now(),
     }
     
-    await addDoc(collection(db, "transactions"), payload)
-    setForm({ 
-      category: "", 
-      amount: "", 
-      date: new Date().toISOString().slice(0, 10), 
-      note: "",
-      type: "expense"
-    })
+    try {
+      await addDoc(collection(db, "transactions"), payload)
+      setForm({ 
+        category: "", 
+        amount: "", 
+        date: new Date().toISOString().slice(0, 10), 
+        note: "",
+        type: "expense"
+      })
+      console.log(`Added ${form.type} transaction: ${form.category} - ₹${amount}`)
+    } catch (error) {
+      console.error("Error adding transaction:", error)
+      alert("Failed to add transaction. Please try again.")
+    }
   }
 
   const onDelete = async (id: string) => {
@@ -160,8 +170,8 @@ function TransactionsContent() {
   }
 
   const total = useMemo(() => {
-    const income = txs.filter(t => t.type === 'income').reduce((acc, t) => acc + (Number(t.amount) || 0), 0)
-    const expenses = txs.filter(t => t.type === 'expense').reduce((acc, t) => acc + (Number(t.amount) || 0), 0)
+    const income = txs.filter(t => t.type === 'income').reduce((acc, t) => acc + Math.abs(Number(t.amount) || 0), 0)
+    const expenses = txs.filter(t => t.type === 'expense').reduce((acc, t) => acc + Math.abs(Number(t.amount) || 0), 0)
     return { income, expenses, net: income - expenses }
   }, [txs])
 
@@ -189,15 +199,21 @@ function TransactionsContent() {
     }
     
     try {
-      const res = await trigger({ note: form.note, amount: Number(form.amount || 0) })
+      const res = await trigger({ 
+        note: form.note, 
+        amount: Number(form.amount || 0), 
+        type: form.type 
+      })
       if (res?.ok && res.data?.category) {
         setForm((f) => ({ ...f, category: res.data.category }))
       } else {
-        setForm((f) => ({ ...f, category: "Other" }))
+        const fallback = form.type === 'income' ? "Other Income" : "Other Expense"
+        setForm((f) => ({ ...f, category: fallback }))
       }
     } catch (error) {
       console.error("AI categorization failed:", error)
-      setForm((f) => ({ ...f, category: "Other" }))
+      const fallback = form.type === 'income' ? "Other Income" : "Other Expense"
+      setForm((f) => ({ ...f, category: fallback }))
     }
   }
 
@@ -412,7 +428,7 @@ function TransactionsContent() {
                           
                           <div className="text-right">
                             <div className={`text-lg font-bold ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
-                              {t.type === 'income' ? '+' : '-'}₹{Number(t.amount).toLocaleString()}
+                              {t.type === 'income' ? '+' : '-'}₹{Math.abs(Number(t.amount)).toLocaleString()}
                             </div>
                             <div className="text-xs text-muted-foreground">
                               {new Date(t.date).toLocaleDateString('en-IN', {

@@ -6,34 +6,35 @@ export async function POST(req: Request) {
   try {
     // Input validation
     const body = await req.json().catch(() => ({}))
-    const { note, amount } = body
+    const { note, amount, type } = body
     
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 
         ok: true, 
-        data: { category: "Other Expense" }
+        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
       })
     }
     
     if (typeof amount !== 'number' || isNaN(amount)) {
       return Response.json({ 
         ok: true, 
-        data: { category: "Other Expense" }
+        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
       })
     }
 
-    // Use enhanced rule-based categorization for reliable results
-    console.log(`Categorizing transaction: "${note.trim()}" with amount: ${amount}`)
+    // Use transaction type context for better categorization
+    console.log(`Categorizing ${type} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
     
-    const category = getEnhancedCategory(note.trim(), amount)
+    const category = getEnhancedCategory(note.trim(), Math.abs(amount), type || 'expense')
     console.log(`Using enhanced rule-based category: ${category}`)
     
     return Response.json({ 
       ok: true,
       data: { 
         category,
-        confidence: 0.9, // High confidence for rule-based system
-        source: 'enhanced_rules'
+        confidence: 0.9,
+        source: 'enhanced_rules',
+        type: type || 'expense'
       }
     })
     
@@ -41,21 +42,37 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: "Other Expense" }
+      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
 
-function getEnhancedCategory(description: string, amount: number): string {
-  if (!description) return "Other Expense"
+function getEnhancedCategory(description: string, amount: number, transactionType: string): string {
+  if (!description) return transactionType === 'income' ? "Other Income" : "Other Expense"
   
   const desc = description.toLowerCase().trim()
   
-  // Income detection (positive amounts or salary-related keywords)
-  if (amount > 0 || desc.includes("salary") || desc.includes("income") || desc.includes("bonus") || 
-      desc.includes("freelance") || desc.includes("dividend") || desc.includes("refund") || 
-      desc.includes("credit") || desc.includes("deposit") || desc.includes("payment received")) {
-    return "Income"
+  // Handle income transactions
+  if (transactionType === 'income') {
+    if (desc.includes("salary") || desc.includes("wage") || desc.includes("payroll")) {
+      return "Salary"
+    }
+    if (desc.includes("freelance") || desc.includes("contract") || desc.includes("consulting")) {
+      return "Freelance"
+    }
+    if (desc.includes("business") || desc.includes("revenue") || desc.includes("profit")) {
+      return "Business"
+    }
+    if (desc.includes("dividend") || desc.includes("interest") || desc.includes("capital gain")) {
+      return "Investments"
+    }
+    if (desc.includes("rent") && (desc.includes("received") || desc.includes("income"))) {
+      return "Rental"
+    }
+    if (desc.includes("gift") || desc.includes("bonus") || desc.includes("award")) {
+      return "Gifts"
+    }
+    return "Other Income"
   }
 
   // Food & Dining (comprehensive food keywords)
@@ -144,12 +161,14 @@ function getEnhancedCategory(description: string, amount: number): string {
     return "Insurance"
   }
 
-  // Investment (mutual funds, stocks, SIP)
+  // Investment should be handled as expense category for purchases
+  // For expense transactions, investment purchases go to "Other Expense"
+  // For income transactions, investment returns go to "Investments"
   if (desc.includes("investment") || desc.includes("mutual fund") || desc.includes("sip") ||
       desc.includes("stock") || desc.includes("zerodha") || desc.includes("groww") ||
       desc.includes("paytm money") || desc.includes("kuvera") || desc.includes("fund") ||
       desc.includes("equity") || desc.includes("bond") || desc.includes("portfolio")) {
-    return "Investment"
+    return "Other Expense" // Investment purchases are expenses
   }
 
   // Rent (housing rent)
@@ -158,6 +177,6 @@ function getEnhancedCategory(description: string, amount: number): string {
     return "Rent"
   }
 
-  // Default fallback
+  // Default fallback for expenses
   return "Other Expense"
 }
