@@ -119,13 +119,15 @@ export class BudgetService {
     const budgets = await this.getUserBudgets(userId)
     const transactionService = TransactionService.getInstance()
 
+    // ⚡ Bolt: Fetch all transactions once to prevent N+1 query problem inside the budgets loop
+    const allTransactions = await transactionService.getUserTransactions(userId)
+
     return Promise.all(budgets.map(async (budget) => {
       // Calculate current period spending
       const currentPeriodStart = this.getCurrentPeriodStart(budget.period)
       const currentPeriodEnd = new Date().toISOString().split('T')[0]
 
       // Get transactions for this category in current period
-      const allTransactions = await transactionService.getUserTransactions(userId)
       const categoryTransactions = allTransactions.filter(transaction => 
         transaction.category === budget.category &&
         transaction.amount < 0 && // Only expenses
