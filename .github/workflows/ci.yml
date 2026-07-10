@@ -60,12 +60,15 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code
-        if grep -r -E "(AIza|firebase.*key|sk-|sk_)" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude="*.log" --exclude="*.json" .; then
-          # Check if the matched strings are just 'risk_factors' before failing
-          MATCHES=$(grep -r -E "(AIza|firebase.*key|sk-|sk_)" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude="*.log" --exclude="*.json" .)
-          if echo "$MATCHES" | grep -v "risk_factors"; then
+        MATCHES=$(grep -r -E "(AIza|firebase.*key|sk-|sk_)" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude="*.log" --exclude="*.json" --exclude="ci.yml" . || true)
+        if [ -n "$MATCHES" ]; then
+          FILTERED=$(echo "$MATCHES" | grep -v "risk_factors" | grep -v "task_" || true)
+          if [ -n "$FILTERED" ]; then
              echo "Potential secrets found in code!"
+             echo "$FILTERED"
              exit 1
+          else
+             echo "False positives found, no real secrets."
           fi
         fi
         echo "No secrets detected in code"
