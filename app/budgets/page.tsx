@@ -434,6 +434,8 @@ function BudgetContent() {
                                   variant="outline"
                                   onClick={() => setSpendingBudget(status.budget)}
                                   className="brut-border"
+                                  aria-label={`Add spending to ${status.budget.category}`}
+                                  title={`Add spending to ${status.budget.category}`}
                                 >
                                   <DollarSign className="w-3 h-3" />
                                 </Button>
@@ -509,6 +511,8 @@ function BudgetContent() {
                                 variant="outline"
                                 className="brut-border"
                                 onClick={() => setSpendingBudget(budget)}
+                                aria-label={`Add spending to ${budget.category}`}
+                                title={`Add spending to ${budget.category}`}
                               >
                                 <DollarSign className="w-3 h-3" />
                               </Button>
@@ -517,6 +521,8 @@ function BudgetContent() {
                                 variant="outline"
                                 className="brut-border"
                                 onClick={() => setEditingId(budget.id)}
+                                aria-label={`Edit ${budget.category} budget`}
+                                title={`Edit ${budget.category} budget`}
                               >
                                 Edit
                               </Button>
@@ -525,6 +531,8 @@ function BudgetContent() {
                                 variant="destructive"
                                 className="brut-border"
                                 onClick={() => handleDeleteBudget(budget.id)}
+                                aria-label={`Delete ${budget.category} budget`}
+                                title={`Delete ${budget.category} budget`}
                               >
                                 Delete
                               </Button>
