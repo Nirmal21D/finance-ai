@@ -160,6 +160,7 @@ export function HealthScoreCard({
               size="sm" 
               variant="ghost"
               onClick={() => window.location.href = '/health'}
+              aria-label="View Detailed Analysis"
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
