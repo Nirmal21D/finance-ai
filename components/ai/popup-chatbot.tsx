@@ -447,6 +447,7 @@ export function PopupChatbot() {
             <Button
               onClick={() => setIsOpen(!isOpen)}
               data-chat-button
+              aria-label={isOpen ? "Close chat" : "Open AI Assistant"}
               className={`rounded-full w-14 h-14 shadow-lg transition-all duration-300 ${
                 isOpen 
                   ? 'bg-secondary text-secondary-foreground hover:bg-secondary/90' 
@@ -496,6 +497,7 @@ export function PopupChatbot() {
                 size="sm"
                 onClick={() => setIsOpen(false)}
                 className="h-6 w-6 p-0"
+                aria-label="Close chat"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -666,6 +668,7 @@ export function PopupChatbot() {
                         onClick={toggleListening}
                         disabled={isMutating || isTyping}
                         className={`px-3 ${isListening ? 'bg-red-100 border-red-300' : ''}`}
+                        aria-label={isListening ? "Stop recording" : "Voice input"}
                       >
                         {isListening ? <MicOff className="h-4 w-4 text-red-600" /> : <Mic className="h-4 w-4" />}
                       </Button>
@@ -682,6 +685,7 @@ export function PopupChatbot() {
                 disabled={isMutating || isTyping || !input.trim()} 
                 size="sm"
                 className="relative"
+                aria-label="Send message"
               >
                 {(isMutating || isTyping) ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
