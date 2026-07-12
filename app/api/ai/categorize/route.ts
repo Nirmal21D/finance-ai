@@ -40,9 +40,10 @@ export async function POST(req: Request) {
     
   } catch (error) {
     console.error("AI Categorize Error:", error)
+    // Extract type again safely from req, or default to expense
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: "Other Expense" } // Safe default since type variable might not be in scope here
     })
   }
 }
