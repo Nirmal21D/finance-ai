@@ -509,6 +509,7 @@ function BudgetContent() {
                                 variant="outline"
                                 className="brut-border"
                                 onClick={() => setSpendingBudget(budget)}
+                                aria-label="Add spending to budget"
                               >
                                 <DollarSign className="w-3 h-3" />
                               </Button>
