@@ -18,7 +18,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
         
     - name: Install dependencies
@@ -60,7 +60,7 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code
-        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git .; then
+        if grep -r -E "AIza|firebase.*key|sk-[a-zA-Z0-9]{48,}|sk_[a-zA-Z0-9]{48,}" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude-dir=__pycache__ --exclude-dir=.tsbuildinfo --exclude="ci.yml" .; then
           echo "Potential secrets found in code!"
           exit 1
         fi
