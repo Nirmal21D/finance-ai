@@ -60,10 +60,17 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code
-        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git .; then
+        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "\.github/workflows/ci\.yml"; then
           echo "Potential secrets found in code!"
           exit 1
         fi
+
+        # Check for sk_ but exclude the known false positive "risk_factors"
+        if grep -r "sk_" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "risk_factors" | grep -v "\.github/workflows/ci\.yml"; then
+          echo "Potential secrets (sk_) found in code!"
+          exit 1
+        fi
+
         echo "No secrets detected in code"
 
   deploy:

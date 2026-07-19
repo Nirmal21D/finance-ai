@@ -3,29 +3,34 @@ import { MLService } from "@/lib/ml-service"
 const mlService = MLService.getInstance()
 
 export async function POST(req: Request) {
+  let transactionType = 'expense';
   try {
     // Input validation
     const body = await req.json().catch(() => ({}))
     const { note, amount, type } = body
     
+    if (type) {
+      transactionType = type;
+    }
+
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: transactionType === 'income' ? "Other Income" : "Other Expense" }
       })
     }
     
     if (typeof amount !== 'number' || isNaN(amount)) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: transactionType === 'income' ? "Other Income" : "Other Expense" }
       })
     }
 
     // Use transaction type context for better categorization
-    console.log(`Categorizing ${type} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
+    console.log(`Categorizing ${transactionType} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
     
-    const category = getEnhancedCategory(note.trim(), Math.abs(amount), type || 'expense')
+    const category = getEnhancedCategory(note.trim(), Math.abs(amount), transactionType)
     console.log(`Using enhanced rule-based category: ${category}`)
     
     return Response.json({ 
@@ -34,7 +39,7 @@ export async function POST(req: Request) {
         category,
         confidence: 0.9,
         source: 'enhanced_rules',
-        type: type || 'expense'
+        type: transactionType
       }
     })
     
@@ -42,7 +47,7 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: transactionType === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
