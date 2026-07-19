@@ -60,7 +60,7 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code
-        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ .; then
+        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "\.github/workflows/ci\.yml"; then
           echo "Potential secrets found in code!"
           exit 1
         fi
