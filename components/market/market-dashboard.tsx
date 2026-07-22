@@ -101,6 +101,7 @@ export function MarketDashboard({ className = '' }: MarketDashboardProps) {
             size="sm" 
             onClick={checkServiceAndFetchData}
             disabled={isLoading}
+            aria-label="Refresh market dashboard"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>

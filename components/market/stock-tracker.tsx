@@ -92,6 +92,7 @@ export function StockTracker({ symbols, className = '' }: StockTrackerProps) {
             size="sm" 
             onClick={fetchStocks}
             disabled={isLoading}
+            aria-label="Refresh stock data"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>

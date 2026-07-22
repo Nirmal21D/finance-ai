@@ -97,6 +97,7 @@ export function NewsTicker({ category = 'business', count = 5, className = '' }:
             size="sm" 
             onClick={fetchNews}
             disabled={isLoading}
+            aria-label="Refresh market news"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>
