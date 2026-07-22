@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         category,
         confidence: 0.9,
         source: 'enhanced_rules',
-        type: type || 'expense'
+        type: String(type || 'expense')
       }
     })
     
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: "Other Expense" }
     })
   }
 }
