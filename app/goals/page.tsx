@@ -331,26 +331,29 @@ function GoalsContent() {
                         </div>
                         <div className="flex gap-1">
                           <Button 
-                            size="sm" 
+                            size="icon"
                             variant="outline" 
                             onClick={() => setProgressGoal(goal)}
                             className="brut-border"
+                            aria-label="Add progress"
                           >
-                            <DollarSign className="w-3 h-3" />
+                            <DollarSign className="w-4 h-4" />
                           </Button>
                           <Button 
-                            size="sm" 
+                            size="icon"
                             variant="outline" 
                             onClick={() => handleEditGoal(goal)}
+                            aria-label="Edit goal"
                           >
-                            <Edit className="w-3 h-3" />
+                            <Edit className="w-4 h-4" />
                           </Button>
                           <Button 
-                            size="sm" 
+                            size="icon"
                             variant="destructive" 
                             onClick={() => handleDeleteGoal(goal.id)}
+                            aria-label="Delete goal"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
                       </div>
