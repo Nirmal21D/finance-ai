@@ -70,8 +70,9 @@ export default function SignUpPage() {
 
           <form onSubmit={handleSignUp} className="space-y-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">Full Name</label>
+              <label htmlFor="displayName" className="text-sm font-medium mb-2 block">Full Name</label>
               <input
+                id="displayName"
                 type="text"
                 name="displayName"
                 value={formData.displayName}
@@ -79,12 +80,14 @@ export default function SignUpPage() {
                 className="brut-border px-3 py-2 rounded w-full bg-background"
                 placeholder="Enter your full name"
                 disabled={loading}
+                required
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Email</label>
+              <label htmlFor="email" className="text-sm font-medium mb-2 block">Email</label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -92,12 +95,14 @@ export default function SignUpPage() {
                 className="brut-border px-3 py-2 rounded w-full bg-background"
                 placeholder="Enter your email"
                 disabled={loading}
+                required
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Password</label>
+              <label htmlFor="password" className="text-sm font-medium mb-2 block">Password</label>
               <input
+                id="password"
                 type="password"
                 name="password"
                 value={formData.password}
@@ -105,12 +110,14 @@ export default function SignUpPage() {
                 className="brut-border px-3 py-2 rounded w-full bg-background"
                 placeholder="Create a password (min. 6 characters)"
                 disabled={loading}
+                required
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="text-sm font-medium mb-2 block">Confirm Password</label>
               <input
+                id="confirmPassword"
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -118,6 +125,7 @@ export default function SignUpPage() {
                 className="brut-border px-3 py-2 rounded w-full bg-background"
                 placeholder="Confirm your password"
                 disabled={loading}
+                required
               />
             </div>
 
