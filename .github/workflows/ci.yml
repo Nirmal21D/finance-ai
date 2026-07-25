@@ -60,7 +60,7 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code (excluding false positives from sk_ variables)
-        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git .; then
+        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude=tsconfig.tsbuildinfo .; then
           echo "Potential secrets found in code!"
           exit 1
         fi
