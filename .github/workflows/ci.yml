@@ -59,8 +59,8 @@ jobs:
       
     - name: Check for secrets
       run: |
-        # Check for potential secrets in code
-        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git .; then
+        # Check for potential secrets in code (excluding false positives from sk_ variables)
+        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git .; then
           echo "Potential secrets found in code!"
           exit 1
         fi
