@@ -6,26 +6,26 @@ export async function POST(req: Request) {
   try {
     // Input validation
     const body = await req.json().catch(() => ({}))
-    const { note, amount, type } = body
+    const { note, amount, type: transactionType } = body
     
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: transactionType === 'income' ? "Other Income" : "Other Expense" }
       })
     }
     
     if (typeof amount !== 'number' || isNaN(amount)) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: transactionType === 'income' ? "Other Income" : "Other Expense" }
       })
     }
 
     // Use transaction type context for better categorization
-    console.log(`Categorizing ${type} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
+    console.log(`Categorizing ${transactionType} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
     
-    const category = getEnhancedCategory(note.trim(), Math.abs(amount), type || 'expense')
+    const category = getEnhancedCategory(note.trim(), Math.abs(amount), transactionType || 'expense')
     console.log(`Using enhanced rule-based category: ${category}`)
     
     return Response.json({ 
@@ -34,15 +34,24 @@ export async function POST(req: Request) {
         category,
         confidence: 0.9,
         source: 'enhanced_rules',
-        type: type || 'expense'
+        type: transactionType || 'expense'
       }
     })
     
   } catch (error) {
     console.error("AI Categorize Error:", error)
+    // Get type from request body safely or default to expense
+    let fallbackType = 'expense';
+    try {
+        const body = await req.clone().json();
+        if (body && body.type) {
+            fallbackType = body.type;
+        }
+    } catch(e) {}
+
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: fallbackType === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
