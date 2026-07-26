@@ -1,0 +1,1 @@
+## 2024-11-20 - [ARIA Labels on Icon Buttons]\n**Learning:** Reusable component-specific a11y patterns require setting aria-label when the button only has an icon, especially across finance grids.\n**Action:** Applied aria labels on DollarSign icon buttons in budget and goals page.
