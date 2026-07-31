@@ -1,0 +1,3 @@
+## 2024-05-24 - [Add ARIA labels to icon-only action buttons]
+**Learning:** Icon-only action buttons (e.g. for Add, Edit, Delete) in list items were missing ARIA labels across different pages (goals, budgets, transactions). This pattern is a significant accessibility gap for screen reader users when managing their lists, as the action icons (DollarSign, Edit, Trash2) provide no context on their own.
+**Action:** Ensure all icon-only action buttons in list components receive an `aria-label` describing both the action and its specific target (e.g., `aria-label="Edit ${item.name}"`) to provide context and keyboard navigability support.
