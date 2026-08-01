@@ -445,7 +445,6 @@ function TransactionsContent() {
                               size="sm"
                               className="brut-border"
                               onClick={() => startEdit(t)}
-                              aria-label={`Edit ${t.category} transaction`}
                             >
                               Edit
                             </Button>
@@ -458,7 +457,6 @@ function TransactionsContent() {
                                   onDelete(t.id)
                                 }
                               }}
-                              aria-label={`Delete ${t.category} transaction`}
                             >
                               Delete
                             </Button>

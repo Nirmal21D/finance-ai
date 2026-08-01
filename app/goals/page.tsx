@@ -335,8 +335,6 @@ function GoalsContent() {
                             variant="outline" 
                             onClick={() => setProgressGoal(goal)}
                             className="brut-border"
-                            aria-label="Add Progress"
-                            title="Add Progress"
                           >
                             <DollarSign className="w-3 h-3" />
                           </Button>
@@ -344,8 +342,6 @@ function GoalsContent() {
                             size="sm" 
                             variant="outline" 
                             onClick={() => handleEditGoal(goal)}
-                            aria-label="Edit Goal"
-                            title="Edit Goal"
                           >
                             <Edit className="w-3 h-3" />
                           </Button>
@@ -353,8 +349,6 @@ function GoalsContent() {
                             size="sm" 
                             variant="destructive" 
                             onClick={() => handleDeleteGoal(goal.id)}
-                            aria-label="Delete Goal"
-                            title="Delete Goal"
                           >
                             <Trash2 className="w-3 h-3" />
                           </Button>
