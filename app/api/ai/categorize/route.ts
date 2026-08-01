@@ -3,10 +3,12 @@ import { MLService } from "@/lib/ml-service"
 const mlService = MLService.getInstance()
 
 export async function POST(req: Request) {
+  let fallbackType = 'expense';
   try {
     // Input validation
     const body = await req.json().catch(() => ({}))
     const { note, amount, type } = body
+    if (type) fallbackType = type;
     
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 
@@ -42,7 +44,7 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: fallbackType === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
