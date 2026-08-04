@@ -494,6 +494,7 @@ export function PopupChatbot() {
               <Button
                 variant="ghost"
                 size="sm"
+                aria-label="Close chat"
                 onClick={() => setIsOpen(false)}
                 className="h-6 w-6 p-0"
               >
@@ -663,6 +664,7 @@ export function PopupChatbot() {
                         type="button"
                         variant="outline"
                         size="sm"
+                        aria-label={isListening ? 'Stop recording' : 'Voice input'}
                         onClick={toggleListening}
                         disabled={isMutating || isTyping}
                         className={`px-3 ${isListening ? 'bg-red-100 border-red-300' : ''}`}
