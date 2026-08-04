@@ -61,12 +61,12 @@ jobs:
       run: |
         # Check for potential secrets in code
         # Excluding __pycache__ and .next and specific variables like risk_factors to prevent false positives
-        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next .; then
+        if grep -r "AIza\|firebase.*key\|sk-" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "ci.yml"; then
           echo "Potential secrets found in code!"
           exit 1
         fi
         # Check for sk_ but exclude known safe variables like risk_factors
-        if grep -r "sk_" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "risk_factors" | grep -v "sk_"; then
+        if grep -r "sk_" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.next . | grep -v "risk_factors" | grep -v "ci.yml"; then
           echo "Potential secrets (sk prefix) found in code!"
           exit 1
         fi
