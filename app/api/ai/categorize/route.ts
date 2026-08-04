@@ -40,9 +40,11 @@ export async function POST(req: Request) {
     
   } catch (error) {
     console.error("AI Categorize Error:", error)
+    // In catch block, 'type' might be undefined if error occurs before extracting 'type' from body.
+    // Safe fallback to 'Other Expense' since this is an error scenario.
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: "Other Expense" }
     })
   }
 }
