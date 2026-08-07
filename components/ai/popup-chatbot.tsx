@@ -445,6 +445,7 @@ export function PopupChatbot() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
               onClick={() => setIsOpen(!isOpen)}
               data-chat-button
               className={`rounded-full w-14 h-14 shadow-lg transition-all duration-300 ${
@@ -492,6 +493,7 @@ export function PopupChatbot() {
                 </div>
               )}
               <Button
+                aria-label="Close chat window"
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(false)}
@@ -660,6 +662,7 @@ export function PopupChatbot() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
+                        aria-label={isListening ? "Stop voice recording" : "Start voice recording"}
                         type="button"
                         variant="outline"
                         size="sm"
@@ -678,6 +681,7 @@ export function PopupChatbot() {
               )}
               
               <Button 
+                aria-label="Send message"
                 type="submit" 
                 disabled={isMutating || isTyping || !input.trim()} 
                 size="sm"
