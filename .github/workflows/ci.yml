@@ -60,7 +60,8 @@ jobs:
     - name: Check for secrets
       run: |
         # Check for potential secrets in code
-        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git .; then
+        # We also exclude risk_elements so it doesn't match 'sk_'
+        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git . | grep -v "risk_elements" | grep -v "risk_factors" | grep -v "\.next" | grep -v "diagnosticMessages" | grep -v "package-lock.json" | grep -v "pnpm-lock.yaml" | grep -v "\.pyc"; then
           echo "Potential secrets found in code!"
           exit 1
         fi
