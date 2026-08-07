@@ -78,7 +78,7 @@ class HealthScoreResponse(BaseModel):
     strengths: List[str]
     weaknesses: List[str]
     priority_actions: List[str]
-    risk_factors: List[str]
+    risk_elements: List[str]
     
     # Trends
     score_trend: str
@@ -417,7 +417,7 @@ def _convert_health_score_to_response(health_score: FinancialHealthScore) -> Hea
         strengths=health_score.strengths,
         weaknesses=health_score.weaknesses,
         priority_actions=health_score.priority_actions,
-        risk_factors=health_score.risk_factors,
+        risk_elements=health_score.risk_elements,
         score_trend=health_score.score_trend,
         predicted_3_month_score=health_score.predicted_3_month_score,
         financial_goals_on_track=health_score.financial_goals_on_track,
