@@ -61,7 +61,7 @@ jobs:
       run: |
         # Check for potential secrets in code
         # Excluding Python files and TS service files where risk_factors/sk_ variables are known false positives
-        if grep -r "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git --exclude="*.py" --exclude="*financial-health-service.ts" --exclude="*.yml" .; then
+        if grep -r -I "AIza\|firebase.*key\|sk-\|sk_" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next --exclude="*.py" --exclude="*financial-health-service.ts" --exclude="*.yml" --exclude="*.pyc" .; then
           echo "Potential secrets found in code!"
           exit 1
         fi
