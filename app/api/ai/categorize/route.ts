@@ -40,9 +40,10 @@ export async function POST(req: Request) {
     
   } catch (error) {
     console.error("AI Categorize Error:", error)
+    // Safe fallback for error block since we don't know the type
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: "Other Expense" }
     })
   }
 }
