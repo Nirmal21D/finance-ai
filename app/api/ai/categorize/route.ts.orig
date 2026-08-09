@@ -7,52 +7,51 @@ export async function POST(req: Request) {
     // Input validation
     const body = await req.json().catch(() => ({}))
     const { note, amount, type } = body
-    
+
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
-      return Response.json({ 
-        ok: true, 
+      return Response.json({
+        ok: true,
         data: { category: type === 'income' ? "Other Income" : "Other Expense" }
       })
     }
-    
+
     if (typeof amount !== 'number' || isNaN(amount)) {
-      return Response.json({ 
-        ok: true, 
+      return Response.json({
+        ok: true,
         data: { category: type === 'income' ? "Other Income" : "Other Expense" }
       })
     }
 
     // Use transaction type context for better categorization
     console.log(`Categorizing ${type} transaction: "${note.trim()}" with amount: ${Math.abs(amount)}`)
-    
+
     const category = getEnhancedCategory(note.trim(), Math.abs(amount), type || 'expense')
     console.log(`Using enhanced rule-based category: ${category}`)
-    
-    return Response.json({ 
+
+    return Response.json({
       ok: true,
-      data: { 
+      data: {
         category,
         confidence: 0.9,
         source: 'enhanced_rules',
         type: type || 'expense'
       }
     })
-    
+
   } catch (error) {
     console.error("AI Categorize Error:", error)
-    // Safe fallback for error block since we don't know the type
-    return Response.json({ 
-      ok: true, 
-      data: { category: "Other Expense" }
+    return Response.json({
+      ok: true,
+      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
 
 function getEnhancedCategory(description: string, amount: number, transactionType: string): string {
   if (!description) return transactionType === 'income' ? "Other Income" : "Other Expense"
-  
+
   const desc = description.toLowerCase().trim()
-  
+
   // Handle income transactions
   if (transactionType === 'income') {
     if (desc.includes("salary") || desc.includes("wage") || desc.includes("payroll")) {
@@ -77,7 +76,7 @@ function getEnhancedCategory(description: string, amount: number, transactionTyp
   }
 
   // Food & Dining (comprehensive food keywords)
-  if (desc.includes("swiggy") || desc.includes("zomato") || desc.includes("uber eats") || 
+  if (desc.includes("swiggy") || desc.includes("zomato") || desc.includes("uber eats") ||
       desc.includes("food") || desc.includes("restaurant") || desc.includes("dining") ||
       desc.includes("pizza") || desc.includes("burger") || desc.includes("coffee") ||
       desc.includes("starbucks") || desc.includes("mcdonald") || desc.includes("kfc") ||
