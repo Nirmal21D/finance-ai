@@ -496,6 +496,7 @@ export function PopupChatbot() {
                 size="sm"
                 onClick={() => setIsOpen(false)}
                 className="h-6 w-6 p-0"
+                aria-label="Close chat"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -682,6 +683,7 @@ export function PopupChatbot() {
                 disabled={isMutating || isTyping || !input.trim()} 
                 size="sm"
                 className="relative"
+                aria-label="Send message"
               >
                 {(isMutating || isTyping) ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
