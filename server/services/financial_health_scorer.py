@@ -166,7 +166,7 @@ class FinancialHealthScorer:
                 spending_stability_metric, budget_adherence_metric, investment_metric
             ])
             
-            riskFactors = self._identify_risk_factors(df, [
+            riskFactors = self._identify_riskFactors(df, [
                 emergency_fund_metric, debt_to_income_metric, savings_rate_metric
             ])
             
@@ -652,7 +652,7 @@ class FinancialHealthScorer:
             
         return actions[:3]
 
-    def _identify_risk_factors(self, df: pd.DataFrame, metrics: List[HealthMetric]) -> List[str]:
+    def _identify_riskFactors(self, df: pd.DataFrame, metrics: List[HealthMetric]) -> List[str]:
         """Identify potential financial risks"""
         risks = []
         
