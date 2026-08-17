@@ -56,7 +56,7 @@ class FinancialHealthScore:
     strengths: List[str]
     weaknesses: List[str]
     priority_actions: List[str]
-    risk_factors: List[str]
+    riskFactors: List[str]
     
     # Trends and predictions
     score_trend: str  # "improving", "stable", "declining"
@@ -166,7 +166,7 @@ class FinancialHealthScorer:
                 spending_stability_metric, budget_adherence_metric, investment_metric
             ])
             
-            risk_factors = self._identify_risk_factors(df, [
+            riskFactors = self._identify_risk_factors(df, [
                 emergency_fund_metric, debt_to_income_metric, savings_rate_metric
             ])
             
@@ -190,7 +190,7 @@ class FinancialHealthScorer:
                 strengths=strengths,
                 weaknesses=weaknesses,
                 priority_actions=priority_actions,
-                risk_factors=risk_factors,
+                riskFactors=riskFactors,
                 score_trend=score_trend,
                 predicted_3_month_score=predicted_score,
                 financial_goals_on_track=goals_on_track,
@@ -781,7 +781,7 @@ class FinancialHealthScorer:
             strengths=["Getting started with financial tracking"],
             weaknesses=["Need more data for comprehensive analysis"],
             priority_actions=["Add more transaction data", "Set up budgets", "Define financial goals"],
-            risk_factors=["Insufficient data for risk assessment"],
+            riskFactors=["Insufficient data for risk assessment"],
             score_trend="stable",
             predicted_3_month_score=50.0,
             financial_goals_on_track=0,
