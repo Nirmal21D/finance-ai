@@ -1,0 +1,3 @@
+## 2024-08-17 - Missing Form Label Associations
+**Learning:** Custom forms (especially in Auth pages) frequently use `<label>` and `<input>` elements without explicitly linking them via `htmlFor` and `id` attributes. This breaks a11y as screen readers cannot associate the label with the input correctly, and it degrades UX by preventing users from clicking the label to focus the input.
+**Action:** Always verify that every custom form field correctly links its `<label>` and `<input>` elements. Use `htmlFor` on the `<label>` and a matching `id` on the `<input>` (or wrap the input inside the label if design permits).
