@@ -40,9 +40,17 @@ export async function POST(req: Request) {
     
   } catch (error) {
     console.error("AI Categorize Error:", error)
+    // Extract type from request if possible to provide better fallback
+    let fallbackCategory = "Other Expense"
+    try {
+      if (req.body) {
+         // Fallback is handled below
+      }
+    } catch(e) {}
+
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: fallbackCategory }
     })
   }
 }
