@@ -342,6 +342,7 @@ function GoalsContent() {
                             size="sm" 
                             variant="outline" 
                             onClick={() => handleEditGoal(goal)}
+                            aria-label="Edit goal"
                           >
                             <Edit className="w-3 h-3" />
                           </Button>
@@ -349,6 +350,7 @@ function GoalsContent() {
                             size="sm" 
                             variant="destructive" 
                             onClick={() => handleDeleteGoal(goal.id)}
+                            aria-label="Delete goal"
                           >
                             <Trash2 className="w-3 h-3" />
                           </Button>
