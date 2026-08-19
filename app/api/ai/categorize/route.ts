@@ -11,14 +11,14 @@ export async function POST(req: Request) {
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: "Other Expense" }
       })
     }
     
     if (typeof amount !== 'number' || isNaN(amount)) {
       return Response.json({ 
         ok: true, 
-        data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+        data: { category: "Other Expense" }
       })
     }
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
+      data: { category: "Other Expense" }
     })
   }
 }
