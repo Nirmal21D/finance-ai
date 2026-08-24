@@ -54,7 +54,7 @@ export interface FinancialHealthScore {
   strengths: string[]
   weaknesses: string[]
   priority_actions: string[]
-  risk_factors: string[]
+  risk_elements: string[]
   
   // Trends and predictions
   score_trend: 'improving' | 'stable' | 'declining'
