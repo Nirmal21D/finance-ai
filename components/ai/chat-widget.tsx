@@ -189,12 +189,14 @@ export function ChatWidget() {
                 variant="outline"
                 className="brut-border px-3"
                 title="Voice input"
+                aria-label={isListening ? "Stop voice recording" : "Start voice input"}
               >
                 {isListening ? "🔴" : "🎤"}
               </Button>
             )}
             <Button
               onClick={() => onSend()}
+              aria-label="Send message"
               disabled={isMutating || !input.trim()}
               className="brut-border brut-shadow bg-primary text-primary-foreground hover:bg-foreground hover:text-background"
             >
