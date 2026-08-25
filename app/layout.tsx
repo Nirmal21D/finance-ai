@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { PopupChatbot } from "@/components/ai/popup-chatbot"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -41,10 +42,12 @@ export default function RootLayout({
         >
           <ErrorBoundary>
             <AuthProvider>
-              <Suspense fallback={null}>{children}</Suspense>
-              <PopupChatbot />
-              <Analytics />
-              <Toaster />
+              <TooltipProvider>
+                <Suspense fallback={null}>{children}</Suspense>
+                <PopupChatbot />
+                <Analytics />
+                <Toaster />
+              </TooltipProvider>
             </AuthProvider>
           </ErrorBoundary>
         </ThemeProvider>
