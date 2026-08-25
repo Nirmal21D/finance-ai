@@ -3,10 +3,12 @@ import { MLService } from "@/lib/ml-service"
 const mlService = MLService.getInstance()
 
 export async function POST(req: Request) {
+  let type = "expense"
   try {
     // Input validation
     const body = await req.json().catch(() => ({}))
-    const { note, amount, type } = body
+    const { note, amount } = body
+    type = body.type || "expense"
     
     if (!note || typeof note !== 'string' || note.trim().length === 0) {
       return Response.json({ 

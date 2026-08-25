@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { ProtectedRoute } from "@/components/ProtectedRoute"
 import { useAuth } from "@/contexts/AuthContext"
 import { BudgetService, Budget, BudgetStatus } from "@/lib/budget-service"
@@ -429,14 +430,24 @@ function BudgetContent() {
                                 <h3 className="font-semibold">{status.budget.category}</h3>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setSpendingBudget(status.budget)}
-                                  className="brut-border"
-                                >
-                                  <DollarSign className="w-3 h-3" />
-                                </Button>
+                                <TooltipProvider>
+                                  <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      aria-label="Add spending"
+                                      onClick={() => setSpendingBudget(status.budget)}
+                                      className="brut-border"
+                                    >
+                                      <DollarSign className="w-3 h-3" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>Add spending</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                                 <Badge variant="outline">
                                   {status.spentPercentage.toFixed(1)}%
                                 </Badge>
@@ -504,14 +515,24 @@ function BudgetContent() {
                                 </p>
                               </div>
                             <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="brut-border"
-                                onClick={() => setSpendingBudget(budget)}
-                              >
-                                <DollarSign className="w-3 h-3" />
-                              </Button>
+                              <TooltipProvider>
+                                <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    aria-label="Add spending"
+                                    className="brut-border"
+                                    onClick={() => setSpendingBudget(budget)}
+                                  >
+                                    <DollarSign className="w-3 h-3" />
+                                  </Button>
+                                </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Add spending</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                               <Button
                                 size="sm"
                                 variant="outline"
