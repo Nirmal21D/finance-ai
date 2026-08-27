@@ -122,8 +122,6 @@ function ChartTooltipContent({
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
     hideIndicator?: boolean
-    payload?: any[]
-    label?: any
     indicator?: 'line' | 'dot' | 'dashed'
     nameKey?: string
     labelKey?: string
@@ -181,7 +179,7 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {(payload as any[]).map((item: any, index: number) => {
+        {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
           const indicatorColor = color || item.payload.fill || item.color
@@ -259,10 +257,9 @@ function ChartLegendContent({
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> &
-  Omit<RechartsPrimitive.LegendProps, 'payload'> & {
+  Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
     hideIcon?: boolean
     nameKey?: string
-    payload?: any[]
   }) {
   const { config } = useChart()
 
@@ -278,7 +275,7 @@ function ChartLegendContent({
         className,
       )}
     >
-      {(payload as any[]).map((item: any) => {
+      {payload.map((item) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 

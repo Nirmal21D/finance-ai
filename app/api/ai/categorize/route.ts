@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     console.error("AI Categorize Error:", error)
     return Response.json({ 
       ok: true, 
-      data: { category: "Other Expense" }
+      data: { category: type === 'income' ? "Other Income" : "Other Expense" }
     })
   }
 }
