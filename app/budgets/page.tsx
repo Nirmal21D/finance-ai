@@ -434,6 +434,8 @@ function BudgetContent() {
                                   variant="outline"
                                   onClick={() => setSpendingBudget(status.budget)}
                                   className="brut-border"
+                                  aria-label={`Log spending for ${status.budget.category} budget`}
+                                  title="Log spending"
                                 >
                                   <DollarSign className="w-3 h-3" />
                                 </Button>
@@ -509,6 +511,8 @@ function BudgetContent() {
                                 variant="outline"
                                 className="brut-border"
                                 onClick={() => setSpendingBudget(budget)}
+                                aria-label={`Log spending for ${budget.category} budget`}
+                                title="Log spending"
                               >
                                 <DollarSign className="w-3 h-3" />
                               </Button>
