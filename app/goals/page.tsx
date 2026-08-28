@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -330,28 +331,46 @@ function GoalsContent() {
                           </div>
                         </div>
                         <div className="flex gap-1">
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => setProgressGoal(goal)}
-                            className="brut-border"
-                          >
-                            <DollarSign className="w-3 h-3" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => handleEditGoal(goal)}
-                          >
-                            <Edit className="w-3 h-3" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="destructive" 
-                            onClick={() => handleDeleteGoal(goal.id)}
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setProgressGoal(goal)}
+                                className="brut-border"
+                                aria-label="Add Progress"
+                              >
+                                <DollarSign className="w-3 h-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Add Progress</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleEditGoal(goal)}
+                                aria-label="Edit Goal"
+                              >
+                                <Edit className="w-3 h-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Edit Goal</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeleteGoal(goal.id)}
+                                aria-label="Delete Goal"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Delete Goal</TooltipContent>
+                          </Tooltip>
                         </div>
                       </div>
                       
