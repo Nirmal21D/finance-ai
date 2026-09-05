@@ -111,6 +111,8 @@ export function CryptoTracker({ coins, className = '' }: CryptoTrackerProps) {
             size="sm" 
             onClick={fetchCryptos}
             disabled={isLoading}
+            aria-label="Refresh crypto prices"
+            title="Refresh crypto prices"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>
